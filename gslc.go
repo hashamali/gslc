@@ -21,6 +21,11 @@ type httpLogger struct {
 
 func (l httpLogger) NewLogEntry(r *http.Request) middleware.LogEntry {
 	rid := r.Context().Value(middleware.RequestIDKey).(string)
+	scheme := r.URL.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+
 	return &log{
 		Logger:   l.Logger,
 		ID:       rid,
@@ -28,7 +33,7 @@ func (l httpLogger) NewLogEntry(r *http.Request) middleware.LogEntry {
 		Method:   r.Method,
 		Host:     r.Host,
 		Path:     r.URL.Path,
-		Protocol: r.URL.Scheme,
+		Protocol: scheme,
 	}
 }
 
@@ -65,7 +70,7 @@ func (l *log) MarshalZerologObject(zle *zerolog.Event) {
 func (l *log) Write(status, bytes int, header http.Header, elapsed time.Duration, extra interface{}) {
 	l.StatusCode = status
 	l.Bytes = bytes
-	l.Latency = float64(elapsed.Nanoseconds()) / 1000000.0
+	l.Latency = float64(elapsed) / float64(time.Millisecond)
 	l.Logger.Infow(l, "")
 }
 
