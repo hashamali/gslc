@@ -49,7 +49,7 @@ type log struct {
 	StatusCode int
 	Latency    float64
 	Error      error
-	Stack      []byte
+	Stack      string
 }
 
 func (l *log) MarshalZerologObject(zle *zerolog.Event) {
@@ -82,6 +82,5 @@ func (l *log) Panic(v interface{}, stack []byte) {
 		l.Error = errors.New("unknown error")
 	}
 
-	l.Stack = stack
-	l.Logger.Errorw(l, "")
+	l.Stack = string(stack)
 }
