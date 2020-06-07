@@ -64,6 +64,10 @@ func (l *log) MarshalZerologObject(zle *zerolog.Event) {
 
 	if l.Error != nil {
 		zle.Err(l.Error)
+
+		if l.Stack != "" {
+			zle.Str("stack", l.Stack)
+		}
 	}
 }
 
