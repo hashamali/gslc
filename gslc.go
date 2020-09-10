@@ -7,7 +7,6 @@ import (
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/hashamali/gsl"
-	"github.com/rs/zerolog"
 )
 
 // Middleware will return a new Fiber middleware for logging.
@@ -52,30 +51,37 @@ type log struct {
 	Stack      string
 }
 
-func (l *log) MarshalZerologObject(zle *zerolog.Event) {
-	zle.Str("id", l.ID)
-	zle.Str("remote_ip", l.RemoteIP)
-	zle.Str("host", l.Host)
-	zle.Str("method", l.Method)
-	zle.Str("path", l.Path)
-	zle.Str("protocol", l.Protocol)
-	zle.Int("status_code", l.StatusCode)
-	zle.Float64("latency", l.Latency)
-
-	if l.Error != nil {
-		zle.Err(l.Error)
-
-		if l.Stack != "" {
-			zle.Str("stack", l.Stack)
-		}
+func (l log) fields() map[string]interface{} {
+	fields := map[string]interface{}{
+		"id":          l.ID,
+		"remote_ip":   l.RemoteIP,
+		"host":        l.Host,
+		"method":      l.Method,
+		"path":        l.Path,
+		"protocol":    l.Protocol,
+		"status_code": l.StatusCode,
+		"latency":     l.Latency,
 	}
+
+	if l.Error != nil && l.Stack != "" {
+		fields["stack"] = l.Stack
+	}
+
+	return fields
 }
 
 func (l *log) Write(status, bytes int, header http.Header, elapsed time.Duration, extra interface{}) {
 	l.StatusCode = status
 	l.Bytes = bytes
 	l.Latency = float64(elapsed) / float64(time.Millisecond)
-	l.Logger.Infow(l, "")
+
+	eventLogger := l.Logger.With(l.fields())
+
+	if l.Error != nil {
+		eventLogger.Error(l.Error.Error())
+	} else {
+		eventLogger.Info("")
+	}
 }
 
 func (l *log) Panic(v interface{}, stack []byte) {
