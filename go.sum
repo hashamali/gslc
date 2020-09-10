@@ -3,6 +3,8 @@ github.com/go-chi/chi v4.1.1+incompatible h1:MmTgB0R8Bt/jccxp+t6S/1VGIKdJw5J74CK
 github.com/go-chi/chi v4.1.1+incompatible/go.mod h1:eB3wogJHnLi3x/kFX2A+IbTBlXxmMeXJVKy9tTv1XzQ=
 github.com/hashamali/gsl v1.0.0 h1:wuyg7vASh5gyBU4hxxOVG7rUyWEslR0WdukOYsy5D/8=
 github.com/hashamali/gsl v1.0.0/go.mod h1:XMz0T+fAsRvHRxQcH+SPf7efEvqArzTiZeJjnhITR7k=
+github.com/hashamali/gsl v1.1.0 h1:3zzyDXL6J2pUcPKiFD80PZRbXyZceqqtfuuQRdGq/7s=
+github.com/hashamali/gsl v1.1.0/go.mod h1:XMz0T+fAsRvHRxQcH+SPf7efEvqArzTiZeJjnhITR7k=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/rs/xid v1.2.1/go.mod h1:+uKXf+4Djp6Md1KODXJxgGQPKngRmWyn10oCKFzNHOQ=
 github.com/rs/zerolog v1.18.0 h1:CbAm3kP2Tptby1i9sYy2MGRg0uxIN9cyDb59Ys7W8z8=
